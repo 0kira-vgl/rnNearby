@@ -1,9 +1,10 @@
 import "@/styles/global.css";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { Welcome } from "@/components/welcome";
 export default function App() {
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text>Hello World!</Text>
+    <View className="flex-1 p-10 gap-10">
+      <Welcome />
     </View>
   );
 }
