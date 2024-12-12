@@ -9,6 +9,8 @@ import {
   Rubik_700Bold,
 } from "@expo-google-fonts/rubik";
 import { Loading } from "@/components/loading";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -23,11 +25,14 @@ export default function Layout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: colors.gray[300] },
-      }}
-    />
+    <>
+      <StatusBar style="dark" backgroundColor="transparent" translucent />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: colors.gray[300] },
+        }}
+      />
+    </>
   );
 }

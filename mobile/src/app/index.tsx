@@ -1,4 +1,3 @@
-import "@/styles/global.css";
 import { View } from "react-native";
 import { router } from "expo-router";
 import { Welcome } from "@/components/welcome";
