@@ -10,7 +10,7 @@ import {
 } from "@expo-google-fonts/rubik";
 import { Loading } from "@/components/loading";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -25,7 +25,8 @@ export default function Layout() {
   }
 
   return (
-    <>
+    // para animação do react-native-bottom-sheet
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar style="dark" backgroundColor="transparent" translucent />
       <Stack
         screenOptions={{
@@ -33,6 +34,6 @@ export default function Layout() {
           contentStyle: { backgroundColor: colors.gray[100] },
         }}
       />
-    </>
+    </GestureHandlerRootView>
   );
 }
