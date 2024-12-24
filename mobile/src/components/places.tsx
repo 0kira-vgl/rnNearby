@@ -3,6 +3,7 @@ import { Place, PlaceProps } from "./place";
 import { useRef } from "react";
 import { s } from "@/styles/places";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import { router } from "expo-router";
 
 type PlacesProps = {
   data: PlaceProps[];
@@ -28,7 +29,12 @@ export function Places({ data }: PlacesProps) {
       <BottomSheetFlatList
         data={data}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Place data={item} />}
+        renderItem={({ item }) => (
+          <Place
+            data={item}
+            onPress={() => router.navigate(`/market/${item.id}`)}
+          />
+        )}
         contentContainerStyle={s.content}
         ListHeaderComponent={() => (
           <Text style={s.title}>Explore locais perto de você</Text>
@@ -36,16 +42,5 @@ export function Places({ data }: PlacesProps) {
         showsVerticalScrollIndicator={false}
       />
     </BottomSheet>
-
-    // <View className="bg-GRAY-100">
-    //   <View className="gap-3 p-6 pb-[100]"></View>
-
-    //   <View className="w-20 h-1 bg-GRAY-300"></View>
-
-    //   <Text
-    //     className="text-GRAY-600 text-base mb-4"
-    //     style={{ fontFamily: fontFamily.regular }}
-    //   ></Text>
-    // </View>
   );
 }

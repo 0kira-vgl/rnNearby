@@ -3,6 +3,7 @@ import { PlaceProps } from "@/components/place";
 import { Places } from "@/components/places";
 import { api } from "@/services/api";
 import { fontFamily } from "@/styles/theme";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Alert, Text } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
@@ -92,7 +93,7 @@ export default function Home({ latitude, longitude }: MarketsProps) {
             }}
             image={require("@/assets/pin.png")}
           >
-            <Callout>
+            <Callout onPress={() => router.navigate(`/market/${item.id}`)}>
               <View>
                 <Text
                   className="text-sm text-GRAY-600"
