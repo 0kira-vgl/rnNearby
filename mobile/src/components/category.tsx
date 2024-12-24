@@ -21,7 +21,7 @@ export function Category({
     <Pressable
       className={twMerge(
         "h-9 bg-GRAY-100 border border-GRAY-300 items-center rounded-lg justify-center flex-row px-3 gap-[10]",
-        isSelected && "bg-GREEN-base border-[0]" // estilização condicional
+        isSelected && "bg-GREEN-base border-GREEN-base" // estilização condicional
       )}
       {...rest}
     >

@@ -36,6 +36,7 @@ export function Place({ data, ...rest }: Props) {
         <Text
           className="text-xs text-GRAY-500"
           style={{ fontFamily: fontFamily.regular }}
+          numberOfLines={2} // define o numero max de linhas e add "..."
         >
           {data.description}
         </Text>
