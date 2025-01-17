@@ -5,8 +5,8 @@ import { Cover } from "@/components/market/cover";
 import { Details, DetailsProps } from "@/components/market/details";
 import { api } from "@/services/api";
 import { Redirect, router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { Alert, Modal, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Alert, Modal, ScrollView, StatusBar, View } from "react-native";
 import { useCameraPermissions, CameraView } from "expo-camera";
 
 type DataProps = DetailsProps & {
@@ -21,6 +21,8 @@ export default function Market() {
   const [couponIsFetching, setCouponIsFetching] = useState(false);
   const params = useLocalSearchParams<{ id: string }>(); // usado para acessar os parâmetros de consulta
   const [_, requestPermission] = useCameraPermissions();
+
+  const qrLock = useRef(false); // para ler o qr apenas uma vez
 
   async function fetchMarket() {
     try {
@@ -46,11 +48,25 @@ export default function Market() {
         );
       }
 
+      qrLock.current = false;
       setIsVisibleCameraModal(true); // estado update
     } catch (error) {
       console.log(error);
       Alert.alert("câmera", "Não foi possível utilizar a câmera.");
     }
+  }
+
+  function handleUseCoupon(id: string) {
+    setIsVisibleCameraModal(false);
+
+    Alert.alert(
+      "Cupom",
+      "Não é possível reutilizar um cupom resgatado. Deseja realmente resgatar o cupom?",
+      [
+        { style: "cancel", text: "Não" },
+        { text: "Sim", onPress: () => getCoupon(id) },
+      ]
+    );
   }
 
   async function getCoupon(id: string) {
@@ -59,7 +75,7 @@ export default function Market() {
 
       const { data } = await api.get(`/coupons/${id}`);
 
-      Alert.alert("coupon", data.coupon);
+      Alert.alert("Cupom", data.coupon);
       setCoupon(data.coupon);
     } catch (error) {
       console.log(error);
@@ -74,7 +90,7 @@ export default function Market() {
 
   useEffect(() => {
     fetchMarket();
-  }, [params.id]);
+  }, [params.id, coupon]);
 
   if (isLoading) {
     return <Loading />;
@@ -86,9 +102,13 @@ export default function Market() {
 
   return (
     <View className="flex-1">
-      <Cover uri={data.cover} />
-      <Details data={data} />
-      {coupon && <Coupon code={coupon} />}
+      <StatusBar barStyle="light-content" hidden={isVisibleCameraModal} />
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Cover uri={data.cover} />
+        <Details data={data} />
+        {coupon && <Coupon code={coupon} />}
+      </ScrollView>
 
       <View className="p-8">
         <Button onPress={handleOpenCamera}>
@@ -96,11 +116,15 @@ export default function Market() {
         </Button>
       </View>
 
-      {/*estado atual*/}
       <Modal style={{ flex: 1 }} visible={isVisibleCameraModal}>
         <CameraView
           facing="back"
-          onBarcodeScanned={({ data }) => console.log(data)}
+          onBarcodeScanned={({ data }) => {
+            if (data && !qrLock.current) {
+              qrLock.current = true; // bloqueia a leitura do qr
+              setTimeout(() => handleUseCoupon(data), 500);
+            }
+          }}
           style={{ flex: 1 }}
         />
 

@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import { Categories, CategoriesProps } from "@/components/categories";
 import { PlaceProps } from "@/components/place";
 import { Places } from "@/components/places";
@@ -30,7 +31,9 @@ export default function Home({ latitude, longitude }: MarketsProps) {
       setCategory(data[0].id); // pega a primeira categoria e deixa selecionada por padrão
     } catch (error) {
       console.log(error);
-      Alert.alert("Categorias", "Não foi possível carregar as categorias.");
+      Alert.alert("Categorias", "Não foi possível carregar as categorias.", [
+        { text: "Ok", onPress: () => router.back() },
+      ]);
     }
   }
 
@@ -59,6 +62,8 @@ export default function Home({ latitude, longitude }: MarketsProps) {
 
   return (
     <View className="flex-1 bg-red-200">
+      <StatusBar style="light" backgroundColor="transparent" translucent />
+
       <Categories
         data={categories}
         onSelect={setCategory} // function que atualiza o estado

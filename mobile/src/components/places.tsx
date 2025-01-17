@@ -11,7 +11,7 @@ type PlacesProps = {
 
 export function Places({ data }: PlacesProps) {
   const dimensions = useWindowDimensions();
-  const bottomSheetRef = useRef<BottomSheet>(null); // certe para ter acesso ao parametros, tal qual {...rest}
+  const bottomSheetRef = useRef<BottomSheet>(null); // serve para ter acesso ao parametros, tal qual {...rest}
 
   const snapPoints = {
     min: 278,
